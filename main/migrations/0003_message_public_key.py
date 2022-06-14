@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0002_message_message_encryption_indicator'),
+        ("main", "0002_message_message_encryption_indicator"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='message',
-            name='public_key',
-            field=models.CharField(default='Test', max_length=256),
+            model_name="message",
+            name="public_key",
+            field=models.CharField(default="Test", max_length=256),
             preserve_default=False,
         ),
     ]

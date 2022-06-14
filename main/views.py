@@ -1,5 +1,9 @@
 from main.models import Identity, Message, MessageEncryptionIndicator
-from main.serializers import IdentitySerializer, MessageSerializer, MessageEncryptionIndicatorSerializer
+from main.serializers import (
+    IdentitySerializer,
+    MessageSerializer,
+    MessageEncryptionIndicatorSerializer,
+)
 from rest_framework import viewsets
 
 

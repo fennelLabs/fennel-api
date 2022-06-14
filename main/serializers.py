@@ -7,7 +7,7 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = "__all__"
 
 
 class IdentitySerializer(serializers.HyperlinkedModelSerializer):
@@ -15,7 +15,7 @@ class IdentitySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Identity
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MessageEncryptionIndicatorSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,4 +23,4 @@ class MessageEncryptionIndicatorSerializer(serializers.HyperlinkedModelSerialize
 
     class Meta:
         model = MessageEncryptionIndicator
-        fields = '__all__'
+        fields = "__all__"
