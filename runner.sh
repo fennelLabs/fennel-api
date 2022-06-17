@@ -18,6 +18,7 @@ function all() {
   python3 -m safety check -r requirements.txt
   python3 manage.py check
   static
+  setup
 }
 
 function run_tests() {
@@ -58,6 +59,10 @@ function reset_migrations() {
   rm -rf main/migrations
   python3 manage.py migrate --fake-initial
   python3 manage.py showmigrations
+}
+
+function setup() {
+  python3 manage.py setup
 }
 
 function shell() {
@@ -101,6 +106,10 @@ test)
 
 run)
   run
+  ;;
+
+setup)
+  setup
   ;;
 
 init-all-run)
