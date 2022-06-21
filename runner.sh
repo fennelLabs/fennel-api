@@ -79,7 +79,7 @@ function check() {
 }
 
 function gunicorn_run() {
-  gunicorn femr_onchain.wsgi:application --bind 0.0.0.0:1234
+  gunicorn fennelapi.wsgi:application --bind 0.0.0.0:1234
 }
 
 case "$1" in

@@ -1,5 +1,7 @@
 FROM amd64/ubuntu:latest
 
+ENV PYTHONUNBUFFERED=1
+
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -y && \
     ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
@@ -7,7 +9,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
     dpkg-reconfigure --frontend noninteractive tzdata && \
     apt-get install unzip curl python3 python3-pip \
                     python3-dev libssl-dev \
-                    libmemcached-dev \
                     virtualenv libpq-dev -y && \
     apt-get upgrade -y
 
