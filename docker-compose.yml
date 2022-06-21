@@ -4,7 +4,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - "80:80"
+      - "1234:80"
     depends_on:
       - "dev"
 
@@ -16,8 +16,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   dev:
     build:
@@ -26,8 +24,6 @@ services:
     entrypoint: "./build-dev.sh"
     volumes:
       - .:/build
-    ports:
-      - "8081:8081"
     environment:
       - DEBUG=True
       - ADMIN_NAME=""
