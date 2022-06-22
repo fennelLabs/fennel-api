@@ -7,7 +7,7 @@ from main.models import MessageEncryptionIndicator
 
 INDICATORS = [
     "UNENCRYPTED",
-    #"RSA_ENCRYPTED",
+    # "RSA_ENCRYPTED",
 ]
 
 
