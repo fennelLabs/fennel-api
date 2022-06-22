@@ -3,6 +3,9 @@ version: '3'
 services:
   nginx:
     build: ./nginx
+    volumes:
+      - staticvol:/opt/app/static
+      - mediavol:/opt/app/mediafiles
     ports:
       - 1234:1234
     depends_on:
@@ -22,6 +25,9 @@ services:
       context: .
       dockerfile: Dockerfile
     entrypoint: "./build-dev.sh"
+    volumes:
+      - staticvol:/opt/app/static
+      - mediavol:/opt/app/mediafiles
     environment:
       - DEBUG=True
       - ADMIN_NAME=""
@@ -44,3 +50,5 @@ services:
 
 volumes:
   db:
+  staticvol:
+  mediavol:

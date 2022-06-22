@@ -13,6 +13,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get upgrade -y
 
 COPY requirements.txt /opt/app/requirements.txt
+RUN mkdir /opt/app/static
+RUN mkdir /opt/app/mediafiles
 WORKDIR /opt/app
 RUN pip3 install -r requirements.txt
 
