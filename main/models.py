@@ -18,6 +18,7 @@ class Message(models.Model):
 
 
 class Identity(models.Model):
+    on_chain_identity_number = models.IntegerField()
     fingerprint = models.CharField(max_length=256)
     public_key = models.CharField(max_length=256)
     shared_secret_key = models.CharField(max_length=256)
