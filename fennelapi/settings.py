@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "main",
     "django_filters",
     "rest_framework",
+    "django_nose",
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,12 @@ SESSION_COOKIE_HTTPONLY = True
 
 SESSION_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SAMESITE = "None"
+
+TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+
+NOSE_ARGS = [
+    "--with-coverage",
+    "--cover-package=main",
+    "--cover-html",
+    "--cover-inclusive",
+]
