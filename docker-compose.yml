@@ -20,7 +20,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  dev:
+  api-dev:
     build:
       context: .
       dockerfile: Dockerfile
