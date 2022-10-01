@@ -9,7 +9,7 @@ services:
     ports:
       - 1234:1234
     depends_on:
-      - "dev"
+      - "api-dev"
 
   database:
     image: "postgres"
