@@ -1,7 +1,5 @@
 FROM amd64/ubuntu:latest
 
-ENV PYTHONUNBUFFERED=1
-
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -y && \
     ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
@@ -21,4 +19,5 @@ RUN pip3 install -r requirements.txt
 EXPOSE 1234
 
 ARG FOO
+ENV PYTHONUNBUFFERED=1
 COPY . /opt/app
