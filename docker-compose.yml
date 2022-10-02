@@ -9,10 +9,10 @@ services:
     ports:
       - 1234:1234
     depends_on:
-      - "dev"
+      - 'apidev'
 
   database:
-    image: "postgres"
+    image: 'postgres'
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -20,11 +20,11 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  api-dev:
+  apidev:
     build:
       context: .
       dockerfile: Dockerfile
-    entrypoint: "./build-dev.sh"
+    entrypoint: './build-dev.sh'
     volumes:
       - staticvol:/opt/app/static
       - mediavol:/opt/app/mediafiles
@@ -46,7 +46,7 @@ services:
       - POSTGRES_NAME=database
       - ENVIRONMENT=LOCAL
     depends_on:
-      - "database"
+      - 'database'
 
 volumes:
   db:
