@@ -29,6 +29,13 @@ class IdentityViewSet(viewsets.ModelViewSet):
     serializer_class = IdentitySerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
 
+    def get_queryset(self):
+        queryset = Identity.objects.all()
+        fingerprint = self.request.query_params.get('fingerprint')
+        if fingerprint is not None:
+            queryset = queryset.filter(fingerprint=fingerprint)
+        return queryset
+
 
 class MessageEncryptionIndicatorViewSet(viewsets.ModelViewSet):
     queryset = MessageEncryptionIndicator.objects.all()
