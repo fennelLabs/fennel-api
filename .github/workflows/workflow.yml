@@ -1,64 +1,48 @@
-name: Publish to GCR and GHCR
-# create simple trigger based on everytime we make change to this repository
-on: [push]
-#define jobs
+name: Release
+on:
+  push:
+
 jobs:
-  Deploy:
-    runs-on: ubuntu-latest #run this workflow on ubuntu instance
-    permissions: #make sure we add permission to read and write package
-      contents: read
-      packages: write
+  docker-release:
+    name: Tagged Docker release to Google Artifact Registry
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' # && startsWith(github.ref, 'refs/tags')  # <-- Notice that I'm filtering here to only run when a tagged commit is pushed
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1 #checkouts your repo, so this workflow can access it
-      #- name: Log in to GHCR
-      #  env:
-      #      REGISTRY: ghcr.io #create env called REGISTRY
-      #  uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      #  with:
-      #      registry: ${{ env.REGISTRY }} #parse REGISTRY env value to here. Make sure it is correctly stating ghcr.io
-      #      username: ${{ github.actor }} #this will be our github account
-      #      password: ${{ secrets.CR_PAT }} #parse the value of repository secret called CR_PAT that we have created earlier
-      - name: Login to GCR
-        env:
-          PROJECT_ID: whiteflag-0 #create env called PROJECT_ID consisted of our actual GCP Project ID
-        uses: google-github-actions/setup-gcloud@v0.3.0 #checkouts GCR repo, so this workflow can access it
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
+
+      - id: auth
+        name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0
         with:
-          service_account_key: ${{ secrets.DOCKER_SECRET }} #parse the value of repository secret called SERVICE_ACCOUNT_KEY that we have created earlier
-          project_id: ${{ env.PROJECT_ID }} #parse the value of env called PROJECT_ID
-          export_default_credentials: true
-          
-      - name: Build Docker Image
-        env:
-          IMAGE_NAME: fennel_api #create env called IMAGE_NAME consisted of actual name of Docker Image after we build
-          PROJECT_ID: whiteflag
-        run: docker build -t $IMAGE_NAME:latest . #build the docker image
-        
-      - name: Configure Docker Client
-        run:  |-
-          gcloud auth configure-docker --quiet #authenticate to gcr
-        
-      - name: Push Docker Image to Container Registry GCR
-        env: 
-          IMAGE_NAME: fennel_api
-          PROJECT_ID: whiteflag
-        #tag docker image to gcr image format then push to gcr
-        run: |-
-          docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest 
-          docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest 
-          
-      - name: Extract metadata (tags, labels) for Docker GHCR
-        env:
-          REGISTRY: ghcr.io
-          IMAGE_NAME: ${{ github.repository }}
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+          token_format: access_token
+          workload_identity_provider: whiteflag-provider
+          service_account: docker-devops@whiteflag-0.iam.gserviceaccount.com
+          access_token_lifetime: 300s
+
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v1
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} #create ghcr image format within as id called meta
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc #push docker image to ghcr
+          registry: us-east1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Get tag
+        id: get-tag
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - id: docker-push-tagged
+        name: Tag Docker image and push to Google Artifact Registry
+        uses: docker/build-push-action@v2
         with:
-          context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+             us-east1-docker.pkg.dev/whiteflag-0/<your-gar-repo-name>/fennel-cli:latest
+            #us-east1-docker.pkg.dev/whiteflag-0/<your-gar-repo-name>/fennel-cli:${{ steps.get-tag.outputs.short_ref }}
+          
