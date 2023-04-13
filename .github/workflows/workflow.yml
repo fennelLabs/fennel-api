@@ -6,7 +6,7 @@ jobs:
   docker-release:
     name: Tagged Docker release to Google Artifact Registry
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' # && startsWith(github.ref, 'refs/tags')  # <-- Notice that I'm filtering here to only run when a tagged commit is pushed
+    #if: github.event_name == 'push' # && startsWith(github.ref, 'refs/tags')  # <-- Notice that I'm filtering here to only run when a tagged commit is pushed
 
     permissions:
       contents: 'read'
@@ -25,6 +25,12 @@ jobs:
           workload_identity_provider: whiteflag-provider
           service_account: docker-devops@whiteflag-0.iam.gserviceaccount.com
           access_token_lifetime: 300s
+     
+      - name: Build Docker Image
+        env:
+          IMAGE_NAME: fennel-api #create env called IMAGE_NAME consisted of actual name of Docker Image after we build
+          PROJECT_ID: whiteflag-0
+        run: docker build -t $IMAGE_NAME:latest . #build the docker image
 
       - name: Login to Artifact Registry
         uses: docker/login-action@v1
@@ -43,6 +49,6 @@ jobs:
         with:
           push: true
           tags: |
-             us-east1-docker.pkg.dev/whiteflag-0/<your-gar-repo-name>/fennel-cli:latest
+             us-east1-docker.pkg.dev/whiteflag-0/fennel-api/fennel-cli:latest
             #us-east1-docker.pkg.dev/whiteflag-0/<your-gar-repo-name>/fennel-cli:${{ steps.get-tag.outputs.short_ref }}
           
