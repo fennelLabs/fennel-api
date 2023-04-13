@@ -5,7 +5,7 @@ provider "google" {
 
 resource "google_compute_instance" "fennel-api" {
   name         = "fennel-api-instance"
-  machine_type = "e2-medium"
+  machine_type = "t2a-standard-1"
   zone         = "us-east1"
   
   boot_disk {
