@@ -49,6 +49,6 @@ jobs:
         with:
           push: true
           tags: |
-             us-east1-docker.pkg.dev/whiteflag-0/fennel-api/fennel-api:latest
+             us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
             #us-east1-docker.pkg.dev/whiteflag-0/<your-gar-repo-name>/fennel-cli:${{ steps.get-tag.outputs.short_ref }}
           
