@@ -1,8 +1,3 @@
-provider "google" {
-  project = "whiteflag-0"
-  region  = "us-east1"
-}
-
 resource "google_compute_instance" "fennel-api" {
   name         = "fennel-api-instance"
   machine_type = "t2a-standard-1"
