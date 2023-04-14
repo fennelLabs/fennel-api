@@ -9,7 +9,7 @@ resource "google_compute_instance" "fennel-api" {
     }
   }
 
-  #metadata_startup_script = "echo Hello, World!"
+  #metadata_startup_script = "echo Hello, World!"test
   
   network_interface {
     network = "default"
