@@ -30,7 +30,7 @@ resource "google_compute_instance" "fennel-api" {
 sudo docker run \
   -p 8080:8080 \
   --env ENV_VAR_NAME=ENV_VAR_VALUE \
-  "us-east1-docker.pkg.dev/\${google_compute_project()}/fennel-docker-registry/fennel-api:latest"
+  "us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
 EOF
 
   service_account {
