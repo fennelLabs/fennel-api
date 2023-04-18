@@ -32,16 +32,7 @@ resource "google_compute_instance" "fennel-api" {
     google-logging-enabled    = "true"
     google-monitoring-enabled = "true"
   }
-
-  # Setting the startup script to start the Docker image
-  metadata_startup_script = <<EOF
-#!/bin/bash
-sudo docker run \
-  -p 8080:8080 \
-  --env ENV_VAR_NAME=ENV_VAR_VALUE \
-  "us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
-EOF
-
+ 
   service_account {
     scopes = ["cloud-platform"]
   }
