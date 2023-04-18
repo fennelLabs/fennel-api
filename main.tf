@@ -1,6 +1,6 @@
 resource "google_compute_instance" "fennel-api" {
   name         = "fennel-api-instance"
-  machine_type = "t2a-standard-1"
+  machine_type = "e2-small"
   zone         = "us-east1-b"
   
   boot_disk {
