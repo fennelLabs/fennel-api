@@ -1,3 +1,12 @@
+module "gce-container" {
+  source = "terraform-google-modules/container-vm/google"
+  version = "~> 2.0"  # Upgrade the version if necessary.
+
+  container = {
+    image = "us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
+  }
+}
+
 resource "google_compute_instance" "fennel-api" {
   name         = "fennel-api-instance"
   machine_type = "e2-small"
@@ -5,7 +14,7 @@ resource "google_compute_instance" "fennel-api" {
   
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      image = module.gce-container.source_image
     }
   }
 
@@ -16,12 +25,12 @@ resource "google_compute_instance" "fennel-api" {
     access_config {}
   }
 
-  # Provisioning a GCP artifact registry instance
-  metadata = {
-    # Required to authenticate with Artifact Registry
-    "google-artifactregistry-repo" = "fennel-docker-registry"
-    # The Docker image to run
-    "google-artifactregistry-image" = "fennel-api:latest"
+ 
+ metadata = {
+    # Required metadata key.
+    gce-container-declaration = module.gce-container.metadata_value
+    google-logging-enabled    = "true"
+    google-monitoring-enabled = "true"
   }
 
   # Setting the startup script to start the Docker image
