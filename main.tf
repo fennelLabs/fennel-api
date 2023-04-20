@@ -4,7 +4,7 @@ module "gce-container" {
 
   container = {
     #image = "https://us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
-    image = "cos-stable-85-13310-1041-0"
+    image = "ubuntu-os-cloud/ubuntu-2004-lts"
   }
 }
 
@@ -20,7 +20,14 @@ resource "google_compute_instance" "fennel-api" {
   }
 
   #metadata_startup_script = "echo Hello, World!"
-  metadata_startup_script = "#!/bin/bash\ndocker run us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
+  metadata_startup_script = <<EOF
+    #!/bin/bash
+    apt-get update
+    apt-get install -y docker.io
+    docker run -d -p 80:80 us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
+  EOF  
+  
+  #"#!/bin/bash\ndocker run us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
   
   network_interface {
     network = "default"
