@@ -15,7 +15,7 @@ resource "google_compute_instance" "fennel-api" {
   
   boot_disk {
     initialize_params {
-      image = "cos-stable-85-13310-1041-0"
+      image = "cos-105-17412-1-66"
     }
   }
 
