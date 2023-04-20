@@ -24,7 +24,9 @@ resource "google_compute_instance" "fennel-api" {
     #!/bin/bash
     apt-get update
     apt-get install -y docker.io
-    docker run -d -p 80:80 us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
+    gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-east1-docker.pkg.dev
+    docker pull us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
+    docker run -d -p 8080:8080 --name fennel-api us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
   EOF  
   
   #"#!/bin/bash\ndocker run us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest"
