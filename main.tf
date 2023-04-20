@@ -15,7 +15,7 @@ resource "google_compute_instance" "fennel-api" {
   
   boot_disk {
     initialize_params {
-      image = "cos-105-17412-1-66"
+      image = "debian-cloud/debian-11"
     }
   }
 
