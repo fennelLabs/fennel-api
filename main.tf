@@ -44,11 +44,6 @@ resource "google_compute_instance" "fennel-api" {
     google-logging-enabled    = "true"
     google-monitoring-enabled = "true"
   }
-
-  allow {
-    protocol = "tcp"
-    ports    = ["1234"]
-  }
  
   service_account {
     scopes = ["cloud-platform"]
