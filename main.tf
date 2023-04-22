@@ -15,11 +15,18 @@ resource "google_compute_instance" "fennel-api" {
   name         = "fennel-api-instance"
   machine_type = "e2-small"
   zone         = "us-east1-b"
+
+  can_ip_forward = true
   
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
     }
+  }
+
+  network_interface {
+    network    = "whiteflag-sandbox-vpc"
+    subnetwork = "public-subnet"
   }
 
   metadata_startup_script = <<EOF
