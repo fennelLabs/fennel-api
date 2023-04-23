@@ -27,6 +27,9 @@ resource "google_compute_instance" "fennel-api" {
   network_interface {
     network    = "whiteflag-sandbox-vpc"
     subnetwork = "public-subnet"
+     access_config {
+      nat_ip = google_compute_address.fennel-api-ip.address
+    }
   }
 
   metadata_startup_script = <<EOF
@@ -37,18 +40,6 @@ resource "google_compute_instance" "fennel-api" {
     docker pull us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
     docker run -dit -p 1234:1234 --name fennel-api us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
   EOF  
-  
-  network_interface {
-    network = "whiteflag-sandbox-vpc"
-    access_config {
-      nat_ip = google_compute_address.fennel-api-ip.address
-    }
-    nic_type = "ONE_TO_ONE_NAT"
-    alias_ip {
-      ip_cidr_range = google_compute_address.fennel-api-ip.address + "/32"
-      subnetwork_range_name = "default"
-    }
-  }
 
  metadata = {
     # Required metadata key.
