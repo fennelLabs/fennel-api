@@ -39,9 +39,14 @@ resource "google_compute_instance" "fennel-api" {
   EOF  
   
   network_interface {
-    network = "default"
+    network = "whiteflag-sandbox-vpc"
     access_config {
       nat_ip = google_compute_address.fennel-api-ip.address
+    }
+    nic_type = "ONE_TO_ONE_NAT"
+    alias_ip {
+      ip_cidr_range = google_compute_address.fennel-api-ip.address + "/32"
+      subnetwork_range_name = "default"
     }
   }
 
