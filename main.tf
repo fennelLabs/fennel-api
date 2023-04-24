@@ -17,6 +17,7 @@ resource "google_compute_instance" "fennel-api" {
   zone         = "us-east1-b"
 
   can_ip_forward = true
+  tags = ["public-server"]
   
   boot_disk {
     initialize_params {
