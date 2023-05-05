@@ -24,7 +24,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    entrypoint: './build-dev.sh'
     volumes:
       - staticvol:/opt/app/static
       - mediavol:/opt/app/mediafiles
