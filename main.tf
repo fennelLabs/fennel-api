@@ -7,6 +7,15 @@ module "gce-container" {
   }
 }
 
+resource "google_storage_bucket_object" "startup" {
+  name   = "fennel-api-terraform-start.sh"
+  bucket = "whiteflag-0-admin"
+  source = "fennel-api-terraform-start.sh"
+
+  content_type = "text/plain"
+}
+
+
 resource "google_compute_address" "fennel-api-ip" {
   name = "fennel-api-ip"
 }
@@ -33,17 +42,8 @@ resource "google_compute_instance" "fennel-api" {
     }
   }
 
-  metadata_startup_script = <<EOF
-    #!/bin/bash
-    apt-get update
-    apt-get install -y docker.io
-    gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin us-east1-docker.pkg.dev
-    docker pull us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
-    docker run -dit -p 1234:1234 --name fennel-api us-east1-docker.pkg.dev/whiteflag-0/fennel-docker-registry/fennel-api:latest
-  EOF  
-
  metadata = {
-    # Required metadata key.
+    startup-script-url = "gs://whiteflag-0-admin/fennel-api-terraform-start.sh"
     gce-container-declaration = module.gce-container.metadata_value
     google-logging-enabled    = "true"
     google-monitoring-enabled = "true"
