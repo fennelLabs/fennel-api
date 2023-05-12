@@ -11,7 +11,6 @@ resource "google_storage_bucket_object" "startup" {
   name   = "fennel-api-terraform-start.sh"
   bucket = "whiteflag-0-admin"
   source = "fennel-api-terraform-start.sh"
-
   content_type = "text/plain"
 }
 
