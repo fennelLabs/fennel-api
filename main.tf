@@ -52,3 +52,9 @@ resource "google_compute_instance" "fennel-api" {
     scopes = ["cloud-platform"]
   }
 }
+
+resource "google_storage_bucket_object" "fennel-api-ip" {
+  name   = "fennel-api-ip.sh"
+  bucket = "whiteflag-0-admin"
+  content = google_compute_address.fennel-api-ip.address
+}
