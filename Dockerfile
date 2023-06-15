@@ -22,4 +22,4 @@ ARG FOO
 ENV PYTHONUNBUFFERED=1
 COPY . /opt/app
 
-ENTRYPOINT ["./build-dev.sh"]
+ENTRYPOINT ["./build.sh"]
